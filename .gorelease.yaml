@@ -16,13 +16,13 @@ before:
     - go generate ./...
 
 builds:
+  - main: ./cmd/blogo
   - env:
       - CGO_ENABLED=0
     goos:
       - linux
       - windows
       - darwin
-  - main: ./cmd/blogo/
 archives:
   - format: tar.gz
     # this name template makes the OS and Arch compatible with the results of `uname`.
