@@ -1,0 +1,608 @@
+basePath: /api
+definitions:
+  model.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  model.Post:
+    type: object
+  model.RegisterInput:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      skill:
+        type: string
+      username:
+        type: string
+    type: object
+  model.User:
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: blogo API webserver project for creating and serving blog system
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: blogo
+  version: "1.0"
+paths:
+  /api/v1/auth/login:
+    post:
+      description: Logs in the user with their credentials and returns a JWT token
+        for authentication
+      parameters:
+      - description: Login credentials
+        in: body
+        name: loginInput
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful with token and user data
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login a user and generate a JWT token
+      tags:
+      - auth
+  /api/v1/auth/register:
+    post:
+      description: Registers a new user with the provided credentials and returns
+        user data
+      parameters:
+      - description: Register credentials
+        in: body
+        name: registerInput
+        required: true
+        schema:
+          $ref: '#/definitions/model.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Register successful with user data
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+      tags:
+      - auth
+  /api/v1/posts:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all posts from the application
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with a list of posts
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all posts
+      tags:
+      - posts
+    post:
+      consumes:
+      - application/json
+      description: Create a new post with the given data
+      parameters:
+      - description: Post data
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/model.Post'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success message for post creation
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new post
+      tags:
+      - posts
+  /api/v1/posts/{id}:
+    delete:
+      description: Remove a post from the system by its unique ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post deletion successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a post by ID
+      tags:
+      - posts
+    get:
+      description: Retrieve a post by its unique ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post data
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get post by ID
+      tags:
+      - posts
+    put:
+      description: Update the details of an existing post by its unique ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated post data
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/model.Post'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Post update successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a post by ID
+      tags:
+      - posts
+  /api/v1/posts/{id}/like:
+    put:
+      description: Like a specific post by its unique ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Like post successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Like a post by ID
+      tags:
+      - posts
+  /api/v1/posts/{id}/unlike:
+    put:
+      description: Unlike a specific post by its unique ID
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Unlike post successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request error with message
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Unlike a post by ID
+      tags:
+      - posts
+  /api/v1/users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response containing users
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided details
+      parameters:
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or validation error
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new user
+      tags:
+      - users
+  /api/v1/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a user from the system by their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid user ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete a user by ID
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a user's details using their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with user details
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid user ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get a user by ID
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Modify a user's details using their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated user data
+        in: body
+        name: user
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid user ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update a user by ID
+      tags:
+      - users
+  /api/v1/users/{id}/follow:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to follow another user by providing the target user's
+        unique ID
+      parameters:
+      - description: Target User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response when follow action is successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid input
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Follow a user by their ID
+      tags:
+      - following
+  /api/v1/users/{id}/followers:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of followers for a specific user using their unique
+        ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with followers list
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid user ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get followers by user ID
+      tags:
+      - followers
+  /api/v1/users/{id}/following:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of users that a specific user is following using
+        their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response with following list
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid user ID
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get following by user ID
+      tags:
+      - following
+  /api/v1/users/{id}/unfollow:
+    post:
+      consumes:
+      - application/json
+      description: Allows a user to unfollow another user by providing the target
+        user's unique ID
+      parameters:
+      - description: Target User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success response when unfollow action is successful
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad request or invalid input
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Unfollow a user by their ID
+      tags:
+      - following
+securityDefinitions:
+  ApiKeyAuth:
+    description: Handling auth in project
+    in: header
+    name: Authorization
+    type: apiKey
+  BasicAuth:
+    type: basic
+swagger: "2.0"
